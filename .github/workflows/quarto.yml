@@ -1,17 +1,23 @@
 name: quarto_renderer
+
 on: push
+
 jobs:
   pipe:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
+
       - uses: quarto-dev/quarto-actions/setup@v2
         with:
-          tinytex:true
-      
-      - run: pip install ipykernel nbclient matplotlib PyMPDATA
-      - run: quarto render *.ipynb --to-pdf --execute
+          tinytex: true
+
+      - run: python -m pip install ipykernel nbclient matplotlib PyMPDATA
+
+      - run: quarto render report.ipynb --to pdf --execute
+
       - uses: actions/upload-artifact@v7
         with:
+          name: report
           path: report.pdf
-      
+          if-no-files-found: error
